@@ -188,8 +188,8 @@ class FixtureGroup:
 		----------
 		name: str
 			Name of the macro to assign a value to.
-		label: str
-			Value to set the macro to. 
+		label: str or int
+			Value to set the macro channel to. 
 		"""
 		for fixture in self.g.keys():
 			self.g[fixture].set_macro(name, label)	
@@ -229,3 +229,22 @@ class Rig:
 		for name in self.rig_data["groups"]:
 			self.g[name] = FixtureGroup(connection, self, name)
 			self.g[name].config()
+
+	def set_channel(self, channel, value):
+		"""Sets a dmx channel directly.
+
+		Parameters
+		----------
+		channel: int
+			DMX channel to address [0..255].
+		value: int
+			Value to set the channel to [0..255]. 
+
+		Examples
+		--------
+		>>> r = rigs.Rig(dmx, "example_rig")
+		>>> r.set_channel(5, 211)
+		"""
+		if len(self.f.items()) == 0:
+			return
+		self.f.items()[0].set_channel(channel, value)

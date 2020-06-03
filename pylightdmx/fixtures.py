@@ -249,15 +249,15 @@ class Fixture():
 		"""
 		self.macro_offset[name] = self.data["availableChannels"][name]["offset"]
 
-	def set_macro(self, name, label):
+	def set_macro(self, name, val):
 		"""Sets a macro of the fixture.
 
 		Parameters
 		----------
 		name: str
 			Name of the macro to assign a value to.
-		label: str
-			Value to set the macro to. 
+		val: str or int
+			Value or name to set the macro to. 
 
 		Examples
 		--------
@@ -266,8 +266,30 @@ class Fixture():
 		>>> MH.set_macro("Colour Macros", "magenta")
 		>>> dmx.render()
 		"""
-		val = self.data["availableChannels"][name]["capabilities"][label]["startVal"] 
-		self.link.set_chan(self.address + self.macro_offset[name], val)
+		if isinstance(val, int):
+			self.link.set_chan(self.address + self.macro_offset[name], val)
+		elif name in self.data["availableChannels"].keys():
+			if val in self.data["availableChannels"][name]["capabilities"].keys():
+				value = self.data["availableChannels"][name]["capabilities"][val]["startVal"] 
+				self.link.set_chan(self.address + self.macro_offset[name], value)
+
+	def set_channel(self, channel, val):
+		"""Sets a dmx channel directly.
+
+		Parameters
+		----------
+		channel: int
+			DMX channel to address [0..255].
+		val: int
+			Value to set the channel to [0..255]. 
+
+		Examples
+		--------
+		>>> MH = fixtures.Fixture(dmx, "Rave", "Mini_Spot_Moving_Head", 1)
+		>>> MH.set_channel(5, 211)
+		>>> dmx.render()
+		"""
+		self.link.set_chan(int(channel)%255, int(val)%255)
 
 	def config(self):
 		"""Initialises all available channels of the fixture."""
