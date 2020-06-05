@@ -127,7 +127,6 @@ class DMXConnection:
 		packet += self.dmx_frame
 		packet.append(end_val)
 		self.port.write(packet)
-		self.chan_list.clear()
 		if newlist == True:
 			self.chan_list.clear()				
 
