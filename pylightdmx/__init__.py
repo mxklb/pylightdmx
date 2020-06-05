@@ -74,7 +74,11 @@ class DMXConnection:
 			self.label = output1
 			
 
-
+	def get_scene(self):
+		return self.chan_list
+	
+	def set_scene(self, scene={}):
+		self.chan_list = scene
 	
 	def set_chan(self, chan, val, auto_render = False):
 		"""Sets a channel level in local channel list.
