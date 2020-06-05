@@ -289,7 +289,7 @@ class Fixture():
 		>>> MH.set_channel(5, 211)
 		>>> dmx.render()
 		"""
-		self.link.set_chan(int(channel)%256, int(val)%256)
+		self.link.set_chan(channel, val)
 
 	def config(self):
 		"""Initialises all available channels of the fixture."""
