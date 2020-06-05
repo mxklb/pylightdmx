@@ -191,10 +191,11 @@ class DMXConnection:
 			t.join()
 		self.chan_list.clear()
 
-	def DBO(self):
+	def DBO(self, auto_render = True):
 		"""Sets all channels to 0, causing a dead blackout"""
 		self.dmx_frame = [0] * 513
-		self.render() # Auto renders
+		if auto_render == True:
+			self.render()
 		
 	def close(self):
 		"""Closes connection to DMX device."""
