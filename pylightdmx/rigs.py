@@ -245,6 +245,7 @@ class Rig:
 		>>> r = rigs.Rig(dmx, "example_rig")
 		>>> r.set_channel(5, 211)
 		"""
-		if len(self.f.items()) == 0:
+		if len(self.f.keys()) == 0:
 			return
-		self.f.items()[0].set_channel(channel, value)
+		first = list(self.f.keys())[0]
+		self.f[first].set_channel(channel, value)
