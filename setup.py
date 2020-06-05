@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name = "pylightdmx",
-	version = "1.0.2",
+	version = "1.1.0",
 	description = "Enttec DMX USB Pro Mk2 Lighting Controller",
 	packages = find_packages(),
 	license = "GPLV3",
