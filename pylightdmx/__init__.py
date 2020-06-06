@@ -106,7 +106,7 @@ class DMXConnection:
 		if auto_render == True:
 			self.render()
 
-	def render(self, clear = True, newlist = True):
+	def render(self, clear = True, newlist = True, direct = False):
 		"""Executes values in channel list.
 
 		Parameters
@@ -115,13 +115,16 @@ class DMXConnection:
 			If set to true, clears channels not in channel list.
 		newlist: bool, optional(default=True)
 			If set to true, clears the channel list.
+		direct: bool, optional(default=False)
+			If set to true, just use dmx_frame.
 		"""
 		if clear == True: # Clear channels not specified
 			for i in range(0, 512):  
 				if i not in self.chan_list.keys():
 					self.dmx_frame[i] = 0
-		for i in self.chan_list.keys():
-			self.dmx_frame[i] = self.chan_list[i]
+		if direct == False:
+			for i in self.chan_list.keys():
+				self.dmx_frame[i] = self.chan_list[i]
 		packet = [
 				start_val,
 				self.label,
@@ -199,7 +202,7 @@ class DMXConnection:
 		"""Sets all channels to 0, causing a dead blackout"""
 		self.dmx_frame = [0] * 513
 		if auto_render == True:
-			self.render()
+			self.render(clear=False, newlist=False, direct=True)
 		
 	def close(self):
 		"""Closes connection to DMX device."""
