@@ -81,8 +81,8 @@ class DMXConnection:
 		return copy.deepcopy(self.chan_list)
 	
 
-	def set_scene(self, scene={}):
-		"""Set a scene, overwrites local channel list.
+	def set_scene(self, scene={}, auto_render = False):
+		"""Set a scene, overwrites current channel list.
 
 		Parameters
 		----------
@@ -90,8 +90,12 @@ class DMXConnection:
 			Dictionary with 'channel': value pairs.
 			Channels must be between 1 and 512.
 			Values must be between 0 and 255.
+		auto_render: bool, optional(default=False)
+			If set to true, executes the set DMX channel.
 		"""
 		self.chan_list = copy.deepcopy(scene)
+		if auto_render == True:
+			self.render(newlist=False)
 	
 
 	def set_chan(self, chan, val, auto_render = False):
@@ -216,7 +220,7 @@ class DMXConnection:
 		"""Sets all channels to 0, causing a dead blackout"""
 		self.dmx_frame = [0] * 513
 		if auto_render == True:
-			self.render()
+			self.render(direct=True, clear=False)
 		
 	def close(self):
 		"""Closes connection to DMX device."""
