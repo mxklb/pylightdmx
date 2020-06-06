@@ -6,6 +6,7 @@ import serial
 import sys
 import time
 import threading
+import copy
 
 start_val   = 0x7E
 end_val     = 0xE7
@@ -75,11 +76,24 @@ class DMXConnection:
 			
 
 	def get_scene(self):
-		return self.chan_list
+		"""Returns a copy of the current scene, channel list.
+		"""
+		return copy.deepcopy(self.chan_list)
 	
+
 	def set_scene(self, scene={}):
-		self.chan_list = scene
+		"""Set a scene, overwrites local channel list.
+
+		Parameters
+		----------
+		scene: dict
+			Dictionary with 'channel': value pairs.
+			Channels must be between 1 and 512.
+			Values must be between 0 and 255.
+		"""
+		self.chan_list = copy.deepcopy(scene)
 	
+
 	def set_chan(self, chan, val, auto_render = False):
 		"""Sets a channel level in local channel list.
 
@@ -202,7 +216,7 @@ class DMXConnection:
 		"""Sets all channels to 0, causing a dead blackout"""
 		self.dmx_frame = [0] * 513
 		if auto_render == True:
-			self.render(clear=False, newlist=False, direct=True)
+			self.render()
 		
 	def close(self):
 		"""Closes connection to DMX device."""
